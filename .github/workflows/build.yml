@@ -53,14 +53,14 @@ jobs:
           grep -Fxq 'fabric.mod.json' jar-contents.txt
           grep -Fxq 'com/minetogether/MineTogetherClient.class' jar-contents.txt
           grep -Fxq 'com/minetogether/screen/MineTogetherScreen.class' jar-contents.txt
-          cp "$jar_file" release/MineTogether-0.2.0.jar
-          echo "Verified: release/MineTogether-0.2.0.jar"
-          ls -lh release/MineTogether-0.2.0.jar
+          cp "$jar_file" release/MineTogether-0.3.0.jar
+          echo "Verified: release/MineTogether-0.3.0.jar"
+          ls -lh release/MineTogether-0.3.0.jar
 
       - name: Upload remapped JAR
         uses: actions/upload-artifact@v4
         with:
-          name: MineTogether-0.2.0
-          path: release/MineTogether-0.2.0.jar
+          name: MineTogether-0.3.0
+          path: release/MineTogether-0.3.0.jar
           if-no-files-found: error
           retention-days: 30

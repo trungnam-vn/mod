@@ -25,6 +25,7 @@ public final class LocalData {
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
 
     private final List<String> friends = new ArrayList<>();
+    private final List<String> groups = new ArrayList<>();
     private final List<String> messages = new ArrayList<>();
 
     private LocalData() {}
@@ -35,38 +36,58 @@ public final class LocalData {
 
         try (Reader reader = Files.newBufferedReader(FILE)) {
             JsonObject root = JsonParser.parseReader(reader).getAsJsonObject();
-            if (root.has("friends") && root.get("friends").isJsonArray()) {
-                for (JsonElement element : root.getAsJsonArray("friends")) {
-                    if (element.isJsonPrimitive()) data.friends.add(element.getAsString());
-                }
-            }
-            if (root.has("messages") && root.get("messages").isJsonArray()) {
-                for (JsonElement element : root.getAsJsonArray("messages")) {
-                    if (element.isJsonPrimitive()) data.messages.add(element.getAsString());
-                }
-            }
+            readStringArray(root, "friends", data.friends);
+            readStringArray(root, "groups", data.groups);
+            readStringArray(root, "messages", data.messages);
         } catch (Exception exception) {
             System.err.println("[MineTogether] Could not read local data: " + exception.getMessage());
         }
         return data;
     }
 
+    private static void readStringArray(JsonObject root, String key, List<String> target) {
+        if (!root.has(key) || !root.get(key).isJsonArray()) return;
+        for (JsonElement element : root.getAsJsonArray(key)) {
+            if (element.isJsonPrimitive()) target.add(element.getAsString());
+        }
+    }
+
     public synchronized boolean addFriend(String name) {
-        String cleaned = name == null ? "" : name.trim();
-        if (cleaned.isEmpty() || cleaned.length() > 32) return false;
-        boolean exists = friends.stream().anyMatch(friend -> friend.equalsIgnoreCase(cleaned));
-        if (exists) return false;
+        String cleaned = cleanName(name);
+        if (cleaned.isEmpty() || existsIgnoreCase(friends, cleaned)) return false;
         friends.add(cleaned);
         save();
         return true;
     }
 
-    public synchronized void addMessage(String sender, String message) {
+    public synchronized boolean removeFriend(String name) {
+        boolean removed = friends.removeIf(friend -> friend.equalsIgnoreCase(name));
+        if (removed) save();
+        return removed;
+    }
+
+    public synchronized boolean addGroup(String name) {
+        String cleaned = cleanName(name);
+        if (cleaned.isEmpty() || existsIgnoreCase(groups, cleaned)) return false;
+        groups.add(cleaned);
+        save();
+        return true;
+    }
+
+    public synchronized boolean removeGroup(String name) {
+        boolean removed = groups.removeIf(group -> group.equalsIgnoreCase(name));
+        if (removed) save();
+        return removed;
+    }
+
+    public synchronized void addMessage(String sender, String recipient, String message) {
         String cleaned = message == null ? "" : message.trim();
         if (cleaned.isEmpty()) return;
         if (cleaned.length() > 180) cleaned = cleaned.substring(0, 180);
-        messages.add("[" + LocalTime.now().format(TIME_FORMAT) + "] " + sender + ": " + cleaned);
-        while (messages.size() > 80) messages.remove(0);
+        String safeSender = sender == null ? "Người chơi" : sender.trim();
+        String safeRecipient = recipient == null ? "Ghi chú" : recipient.trim();
+        messages.add("[" + LocalTime.now().format(TIME_FORMAT) + "] " + safeSender + " → " + safeRecipient + ": " + cleaned);
+        while (messages.size() > 120) messages.remove(0);
         save();
     }
 
@@ -74,25 +95,42 @@ public final class LocalData {
         return Collections.unmodifiableList(new ArrayList<>(friends));
     }
 
+    public synchronized List<String> getGroups() {
+        return Collections.unmodifiableList(new ArrayList<>(groups));
+    }
+
     public synchronized List<String> getMessages() {
         return Collections.unmodifiableList(new ArrayList<>(messages));
+    }
+
+    private static String cleanName(String value) {
+        if (value == null) return "";
+        String cleaned = value.trim();
+        return cleaned.length() > 32 ? cleaned.substring(0, 32) : cleaned;
+    }
+
+    private static boolean existsIgnoreCase(List<String> values, String candidate) {
+        return values.stream().anyMatch(value -> value.equalsIgnoreCase(candidate));
     }
 
     private synchronized void save() {
         try {
             Files.createDirectories(FILE.getParent());
             JsonObject root = new JsonObject();
-            JsonArray friendArray = new JsonArray();
-            friends.forEach(friendArray::add);
-            JsonArray messageArray = new JsonArray();
-            messages.forEach(messageArray::add);
-            root.add("friends", friendArray);
-            root.add("messages", messageArray);
+            root.add("friends", toJsonArray(friends));
+            root.add("groups", toJsonArray(groups));
+            root.add("messages", toJsonArray(messages));
             try (Writer writer = Files.newBufferedWriter(FILE)) {
                 GSON.toJson(root, writer);
             }
         } catch (IOException exception) {
             System.err.println("[MineTogether] Could not save local data: " + exception.getMessage());
         }
+    }
+
+    private static JsonArray toJsonArray(List<String> values) {
+        JsonArray array = new JsonArray();
+        values.forEach(array::add);
+        return array;
     }
 }

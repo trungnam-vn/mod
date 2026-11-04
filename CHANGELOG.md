@@ -1,11 +1,12 @@
 # Changelog
 
-## 0.2.0
-- Redesigned MineTogether as a social hub with its own dark-blue interface.
-- Added a MineTogether button to title screen and pause menu.
-- Kept the M key shortcut.
-- Added Friends, Messages, Play Together, Wardrobe, Screenshots and Account pages.
-- Added a shortcut to open the screenshots directory.
-- Updated Fabric API dependency to 0.116.17+1.21.1.
-- Added a one-click Windows build script that runs Fabric Loom remapping.
-- Clearly labels online social and hosting functions that still need backend services.
+## 0.3.0
+- Reworked the social hub into a fuller Essential-inspired feature layout with an original visual design.
+- Added a dashboard with friend, group and saved-note counts.
+- Added local friend management (add, remove and open a local conversation).
+- Added local groups and local message notes.
+- Added a working Open to LAN action for singleplayer worlds and copyable LAN address.
+- Added recent screenshot listing and open-file actions.
+- Added a link to the official Minecraft skin management page.
+- Clarified that Internet hosting, real-time social features, cosmetics and emotes require backend services.
+- Bumped build output and GitHub Actions artifact to 0.3.0.

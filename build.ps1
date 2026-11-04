@@ -43,7 +43,7 @@ function Find-Jdk21 {
 Write-Host '[1/4] Kiem tra JDK 21...' -ForegroundColor Cyan
 $JdkHome = Find-Jdk21
 if (-not $JdkHome) {
-    Write-Host 'Chua co JDK 21. Dang tai JDK 21 (Temurin) vao thu muc nguoi dung...' -ForegroundColor Yellow
+    Write-Host 'Chua co JDK 21. Dang tai JDK 21 (Temurin)...' -ForegroundColor Yellow
     New-Item -ItemType Directory -Force -Path $JdkRoot | Out-Null
     $JdkZip = Join-Path $ToolRoot 'temurin-jdk21.zip'
     Invoke-WebRequest -Uri 'https://api.adoptium.net/v3/binary/latest/21/ga/windows/x64/jdk/hotspot/normal/eclipse' -OutFile $JdkZip
@@ -51,29 +51,27 @@ if (-not $JdkHome) {
     Remove-Item $JdkZip -Force
     $JdkHome = Find-Jdk21
 }
-if (-not $JdkHome) { throw 'Khong tim thay JDK 21. Hay cai JDK 21 roi chay lai.' }
+if (-not $JdkHome) { throw 'Khong tim thay JDK 21.' }
 $env:JAVA_HOME = $JdkHome
 $env:Path = (Join-Path $JdkHome 'bin') + ';' + $env:Path
 & (Join-Path $JdkHome 'bin\java.exe') -version
 & (Join-Path $JdkHome 'bin\javac.exe') -version
-if ($LASTEXITCODE -ne 0) { throw 'JDK 21 khong san sang.' }
 
 Write-Host '[2/4] Kiem tra Gradle...' -ForegroundColor Cyan
 if (-not (Test-Path (Join-Path $GradleRoot 'bin\gradle.bat'))) {
-    Write-Host "Dang tai Gradle $GradleVersion..." -ForegroundColor Yellow
     $GradleZip = Join-Path $ToolRoot "gradle-$GradleVersion-bin.zip"
     Invoke-WebRequest -Uri "https://services.gradle.org/distributions/gradle-$GradleVersion-bin.zip" -OutFile $GradleZip
     Expand-Archive -LiteralPath $GradleZip -DestinationPath $ToolRoot -Force
     Remove-Item $GradleZip -Force
 }
 $GradleExe = Join-Path $GradleRoot 'bin\gradle.bat'
-if (-not (Test-Path $GradleExe)) { throw 'Khong tim thay Gradle sau khi giai nen.' }
+if (-not (Test-Path $GradleExe)) { throw 'Khong tim thay Gradle.' }
 
-Write-Host '[3/4] Build bang Fabric Loom (bao gom remap ten lop Minecraft)...' -ForegroundColor Cyan
+Write-Host '[3/4] Build bang Fabric Loom...' -ForegroundColor Cyan
 Push-Location $ProjectDir
 try {
     & $GradleExe --no-daemon clean build
-    if ($LASTEXITCODE -ne 0) { throw 'Gradle build that bai. Chup man hinh loi cuoi va gui lai.' }
+    if ($LASTEXITCODE -ne 0) { throw 'Gradle build that bai.' }
 
     $Candidates = Get-ChildItem (Join-Path $ProjectDir 'build\libs') -Filter '*.jar' |
         Where-Object { $_.Name -notmatch 'sources|dev' } |
@@ -94,9 +92,8 @@ try {
 
     $ReleaseDir = Join-Path $ProjectDir 'release'
     New-Item -ItemType Directory -Force -Path $ReleaseDir | Out-Null
-    $ReleaseJar = Join-Path $ReleaseDir 'MineTogether-0.2.0.jar'
+    $ReleaseJar = Join-Path $ReleaseDir 'MineTogether-0.3.0.jar'
     Copy-Item -LiteralPath $BuiltJar -Destination $ReleaseJar -Force
     Write-Host "JAR da tao: $ReleaseJar" -ForegroundColor Green
-    Write-Host 'Xoa cac ban MineTogether cu trong mods, sau do chi chep ban 0.2.0 nay vao.' -ForegroundColor Yellow
 }
 finally { Pop-Location }
