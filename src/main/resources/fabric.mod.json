@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "minetogether",
+  "version": "${version}",
+  "name": "MineTogether",
+  "description": "A social hub prototype for Minecraft: friends, messages, play together and profile.",
+  "authors": ["MineTogether contributors"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.minetogether.MineTogetherClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.5",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
