@@ -100,10 +100,8 @@ public final class MineTogetherScreen extends Screen {
     }
 
     private void initHome(int x, int y, int width) {
-        addContentButton("Mở danh sách bạn bè", Page.FRIENDS, x, y + 190, width);
-        addContentButton("Mở tin nhắn", Page.MESSAGES, x, y + 222, width);
-        addContentButton("Chơi cùng / mở LAN", Page.PLAY, x, y + 254, width);
-        addContentButton("Xem ảnh chụp", Page.SCREENSHOTS, x, y + 286, width);
+        // The left navigation already provides the quick links. Keep this
+        // dashboard area clear so the statistic cards never overlap buttons.
     }
 
     private void initFriends(int x, int y, int width) {
