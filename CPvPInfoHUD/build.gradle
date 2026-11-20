@@ -2,7 +2,7 @@ plugins {
     id 'net.fabricmc.fabric-loom-remap' version '1.18.4'
 }
 
-version = '1.0.0'
+version = '1.1.0'
 group = 'com.hikari.cpvpinfohud'
 
 base {

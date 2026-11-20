@@ -16,7 +16,6 @@ public final class HudConfig {
     public static boolean armorEnabled = true;
     public static boolean effectsEnabled = true;
     public static boolean inventoryEnabled = true;
-        boolean crystalPracticeEnabled = true;
     public static boolean crystalPracticeEnabled = true;
 
     private HudConfig() {}
@@ -62,5 +61,6 @@ public final class HudConfig {
         boolean armorEnabled = true;
         boolean effectsEnabled = true;
         boolean inventoryEnabled = true;
+        boolean crystalPracticeEnabled = true;
     }
 }

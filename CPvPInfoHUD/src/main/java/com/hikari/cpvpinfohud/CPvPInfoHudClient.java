@@ -155,6 +155,7 @@ public final class CPvPInfoHudClient implements ClientModInitializer {
                     ? "Empty" : client.player.getMainHandStack().getName().getString(), 19), x + 8, y + 35, 0xFFE6EDF7);
             context.drawTextWithShadow(client.textRenderer, "Offhand: " + trim(client.player.getOffHandStack().isEmpty()
                     ? "Empty" : client.player.getOffHandStack().getName().getString(), 21), x + 8, y + 50, 0xFFE6EDF7);
+            y += height + 6;
         }
 
         if (HudConfig.crystalPracticeEnabled) {

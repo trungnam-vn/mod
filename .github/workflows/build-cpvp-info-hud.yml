@@ -52,13 +52,13 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p release
-          jar_file="build/libs/CPvPInfoHUD-1.0.0.jar"
+          jar_file="build/libs/CPvPInfoHUD-1.1.0.jar"
           test -f "$jar_file"
           jar tf "$jar_file" > jar-contents.txt
           grep -Fxq 'fabric.mod.json' jar-contents.txt
           grep -Fxq 'com/hikari/cpvpinfohud/CPvPInfoHudClient.class' jar-contents.txt
           grep -Fxq 'com/hikari/cpvpinfohud/HudSettingsScreen.class' jar-contents.txt
-          cp "$jar_file" release/CPvPInfoHUD-1.0.0.jar
+          cp "$jar_file" release/CPvPInfoHUD-1.1.0.jar
           ls -lh release/CPvPInfoHUD-1.0.0.jar
 
       - name: Upload installable JAR
