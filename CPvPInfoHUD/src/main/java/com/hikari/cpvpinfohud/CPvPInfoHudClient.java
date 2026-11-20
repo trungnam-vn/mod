@@ -10,6 +10,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -84,8 +85,9 @@ public final class CPvPInfoHudClient implements ClientModInitializer {
             int height = 83;
             drawPanel(context, client, x, y, width, height, "ARMOR");
             String[] labels = {"Boots", "Leggings", "Chestplate", "Helmet"};
-            for (int i = 0; i < 4; i++) {
-                ItemStack stack = client.player.getInventory().getArmorStack(i);
+            EquipmentSlot[] armorSlots = {EquipmentSlot.FEET, EquipmentSlot.LEGS, EquipmentSlot.CHEST, EquipmentSlot.HEAD};
+            for (int i = 0; i < armorSlots.length; i++) {
+                ItemStack stack = client.player.getEquippedStack(armorSlots[i]);
                 int rowY = y + 20 + i * 15;
                 if (stack.isEmpty()) {
                     context.drawTextWithShadow(client.textRenderer, labels[i] + ": --", x + 8, rowY, 0xFF9AA4B2);
@@ -112,7 +114,7 @@ public final class CPvPInfoHudClient implements ClientModInitializer {
         if (HudConfig.effectsEnabled) {
             List<StatusEffectInstance> effects = new ArrayList<>(client.player.getStatusEffects());
             int visible = Math.min(effects.size(), 5);
-            int height = 31 + Math.max(1, visible) * 14;
+            int height = 31 + Math.max(1, visible + (effects.size() > visible ? 1 : 0)) * 14;
             drawPanel(context, client, x, y, width, height, "EFFECTS");
             if (effects.isEmpty()) {
                 context.drawTextWithShadow(client.textRenderer, "No active effects", x + 8, y + 20, 0xFF9AA4B2);
