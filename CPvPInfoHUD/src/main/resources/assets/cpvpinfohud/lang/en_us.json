@@ -1,0 +1,7 @@
+{
+  "key.cpvpinfohud.toggle_hud": "Toggle CPvP Info HUD",
+  "key.cpvpinfohud.open_settings": "Open CPvP Info HUD settings",
+  "category.cpvpinfohud": "CPvP Info HUD",
+  "message.cpvpinfohud.enabled": "CPvP Info HUD: ON",
+  "message.cpvpinfohud.disabled": "CPvP Info HUD: OFF"
+}
