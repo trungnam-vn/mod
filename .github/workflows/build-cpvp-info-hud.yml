@@ -1,0 +1,70 @@
+name: Build CPvP Info HUD
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'CPvPInfoHUD/**'
+      - '.github/workflows/build-cpvp-info-hud.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Compile CPvP Info HUD Fabric JAR
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: CPvPInfoHUD
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Java 25 for Loom
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.9.1'
+
+      - name: Build remapped Fabric JAR
+        run: |
+          set -o pipefail
+          gradle --no-daemon --stacktrace clean build 2>&1 | tee build.log
+
+      - name: Upload build diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: CPvPInfoHUD-build-log
+          path: CPvPInfoHUD/build.log
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Verify JAR contents
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release
+          jar_file="build/libs/CPvPInfoHUD-1.0.0.jar"
+          test -f "$jar_file"
+          jar tf "$jar_file" > jar-contents.txt
+          grep -Fxq 'fabric.mod.json' jar-contents.txt
+          grep -Fxq 'com/hikari/cpvpinfohud/CPvPInfoHudClient.class' jar-contents.txt
+          grep -Fxq 'com/hikari/cpvpinfohud/HudSettingsScreen.class' jar-contents.txt
+          cp "$jar_file" release/CPvPInfoHUD-1.0.0.jar
+          ls -lh release/CPvPInfoHUD-1.0.0.jar
+
+      - name: Upload installable JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: CPvPInfoHUD-1.0.0
+          path: CPvPInfoHUD/release/CPvPInfoHUD-1.0.0.jar
+          if-no-files-found: error
+          retention-days: 30
