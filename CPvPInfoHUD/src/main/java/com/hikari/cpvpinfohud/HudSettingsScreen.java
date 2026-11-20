@@ -12,23 +12,20 @@ public final class HudSettingsScreen extends Screen {
 
     @Override
     protected void init() {
-        int center = this.width / 2;
-        int buttonWidth = 210;
-        int left = center - buttonWidth / 2;
-        int y = Math.max(62, this.height / 2 - 64);
+        int buttonWidth = 230;
+        int left = this.width / 2 - buttonWidth / 2;
+        int y = Math.max(50, this.height / 2 - 76);
 
-        addToggleButton(left, y, buttonWidth, "HUD tổng: ", HudConfig.hudEnabled,
-                () -> HudConfig.hudEnabled = !HudConfig.hudEnabled);
-        y += 28;
-        addToggleButton(left, y, buttonWidth, "Armor HUD: ", HudConfig.armorEnabled,
-                () -> HudConfig.armorEnabled = !HudConfig.armorEnabled);
-        y += 28;
-        addToggleButton(left, y, buttonWidth, "Potion HUD: ", HudConfig.effectsEnabled,
-                () -> HudConfig.effectsEnabled = !HudConfig.effectsEnabled);
-        y += 28;
-        addToggleButton(left, y, buttonWidth, "Inventory HUD: ", HudConfig.inventoryEnabled,
-                () -> HudConfig.inventoryEnabled = !HudConfig.inventoryEnabled);
-        y += 38;
+        addToggleButton(left, y, buttonWidth, "HUD tổng: ", () -> HudConfig.hudEnabled = !HudConfig.hudEnabled, HudConfig.hudEnabled);
+        y += 27;
+        addToggleButton(left, y, buttonWidth, "Armor HUD: ", () -> HudConfig.armorEnabled = !HudConfig.armorEnabled, HudConfig.armorEnabled);
+        y += 27;
+        addToggleButton(left, y, buttonWidth, "Potion HUD: ", () -> HudConfig.effectsEnabled = !HudConfig.effectsEnabled, HudConfig.effectsEnabled);
+        y += 27;
+        addToggleButton(left, y, buttonWidth, "Inventory HUD: ", () -> HudConfig.inventoryEnabled = !HudConfig.inventoryEnabled, HudConfig.inventoryEnabled);
+        y += 27;
+        addToggleButton(left, y, buttonWidth, "Crystal Practice: ", () -> HudConfig.crystalPracticeEnabled = !HudConfig.crystalPracticeEnabled, HudConfig.crystalPracticeEnabled);
+        y += 36;
 
         addDrawableChild(ButtonWidget.builder(Text.literal("Lưu và đóng"), button -> {
             HudConfig.save();
@@ -36,7 +33,7 @@ public final class HudSettingsScreen extends Screen {
         }).dimensions(left, y, buttonWidth, 20).build());
     }
 
-    private void addToggleButton(int x, int y, int width, String label, boolean enabled, Runnable toggle) {
+    private void addToggleButton(int x, int y, int width, String label, Runnable toggle, boolean enabled) {
         addDrawableChild(ButtonWidget.builder(
                 Text.literal(label + (enabled ? "BẬT" : "TẮT")),
                 button -> {

@@ -16,6 +16,8 @@ public final class HudConfig {
     public static boolean armorEnabled = true;
     public static boolean effectsEnabled = true;
     public static boolean inventoryEnabled = true;
+        boolean crystalPracticeEnabled = true;
+    public static boolean crystalPracticeEnabled = true;
 
     private HudConfig() {}
 
@@ -32,6 +34,7 @@ public final class HudConfig {
                 armorEnabled = stored.armorEnabled;
                 effectsEnabled = stored.effectsEnabled;
                 inventoryEnabled = stored.inventoryEnabled;
+                crystalPracticeEnabled = stored.crystalPracticeEnabled;
             }
         } catch (Exception ignored) {
             // Keep defaults if the config is damaged or unreadable.
@@ -44,6 +47,7 @@ public final class HudConfig {
         stored.armorEnabled = armorEnabled;
         stored.effectsEnabled = effectsEnabled;
         stored.inventoryEnabled = inventoryEnabled;
+        stored.crystalPracticeEnabled = crystalPracticeEnabled;
 
         try {
             Files.createDirectories(FILE.getParent());

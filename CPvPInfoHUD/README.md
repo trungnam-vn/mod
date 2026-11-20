@@ -1,4 +1,4 @@
-# CPvP Info HUD 1.0.0
+# CPvP Info HUD 1.1.0
 
 Client-side Fabric mod for Minecraft 1.21.11 (Java 21).
 
@@ -6,6 +6,7 @@ Client-side Fabric mod for Minecraft 1.21.11 (Java 21).
 - Armor HUD: durability percentage and bars for equipped armor.
 - Effects HUD: active status effects, amplifier, and remaining time.
 - Inventory HUD: empty slot count plus main-hand and offhand item names.
+- Crystal Practice: counts End Crystals, Obsidian, and Respawn Anchors in the inventory.
 - Settings screen with separate toggles for each HUD section.
 - Settings are saved to config/cpvp-info-hud.json.
 
@@ -13,7 +14,10 @@ Client-side Fabric mod for Minecraft 1.21.11 (Java 21).
 - G: toggle the full HUD.
 - H: open the settings screen.
 
+## Crystal Practice
+The Crystal Practice panel is informational only. Crystal placement, breaking, targeting, and all combat actions remain manual. No anti-cheat bypass is included.
+
 ## Install
-Install Fabric Loader and Fabric API for Minecraft 1.21.11, then place CPvPInfoHUD-1.0.0.jar in the Minecraft mods folder.
+Install Fabric Loader and Fabric API for Minecraft 1.21.11, then place CPvPInfoHUD-1.1.0.jar in the Minecraft mods folder.
 
 This is an informational client-side HUD. It does not automate combat actions, target players, place or break blocks, or modify inventory contents.

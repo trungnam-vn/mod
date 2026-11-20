@@ -13,7 +13,9 @@ import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
@@ -154,6 +156,38 @@ public final class CPvPInfoHudClient implements ClientModInitializer {
             context.drawTextWithShadow(client.textRenderer, "Offhand: " + trim(client.player.getOffHandStack().isEmpty()
                     ? "Empty" : client.player.getOffHandStack().getName().getString(), 21), x + 8, y + 50, 0xFFE6EDF7);
         }
+
+        if (HudConfig.crystalPracticeEnabled) {
+            int height = 82;
+            drawPanel(context, client, x, y, width, height, "CRYSTAL PRACTICE");
+            context.drawTextWithShadow(client.textRenderer,
+                    "End Crystal: " + countItem(client, Items.END_CRYSTAL),
+                    x + 8, y + 20, 0xFFE6EDF7);
+            context.drawTextWithShadow(client.textRenderer,
+                    "Obsidian: " + countItem(client, Items.OBSIDIAN),
+                    x + 8, y + 34, 0xFFE6EDF7);
+            context.drawTextWithShadow(client.textRenderer,
+                    "Respawn Anchor: " + countItem(client, Items.RESPAWN_ANCHOR),
+                    x + 8, y + 48, 0xFFE6EDF7);
+            context.drawTextWithShadow(client.textRenderer,
+                    "Mode: Manual practice only",
+                    x + 8, y + 64, 0xFF9FC5FF);
+        }
+    }
+
+    private static int countItem(MinecraftClient client, Item item) {
+        int total = 0;
+        for (int i = 0; i < 36; i++) {
+            ItemStack stack = client.player.getInventory().getStack(i);
+            if (stack.isOf(item)) {
+                total += stack.getCount();
+            }
+        }
+        ItemStack offhand = client.player.getOffHandStack();
+        if (offhand.isOf(item)) {
+            total += offhand.getCount();
+        }
+        return total;
     }
 
     private static void drawPanel(DrawContext context, MinecraftClient client, int x, int y,
