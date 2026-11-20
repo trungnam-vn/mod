@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "autototemplus",
+  "version": "${version}",
+  "name": "Auto Totem Plus",
+  "description": "Automatically opens the inventory and refills the offhand after its Totem of Undying is used.",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.hikari.autototemplus.AutoTotemPlusClient"
+    ]
+  },
+  "mixins": [
+    {
+      "config": "autototemplus.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.0",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
