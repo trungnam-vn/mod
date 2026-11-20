@@ -31,10 +31,10 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '9.1.0'
+          gradle-version: '9.2.1'
 
       - name: Build remapped Fabric JAR
-        run: gradle --no-daemon clean build
+        run: gradle --no-daemon --stacktrace clean build
 
       - name: Verify JAR contents
         shell: bash
