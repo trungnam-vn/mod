@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "cpvpinfohud",
+  "version": "${version}",
+  "name": "CPvP Info HUD",
+  "description": "A configurable information HUD for armor durability, active effects, and inventory overview.",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.hikari.cpvpinfohud.CPvPInfoHudClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.18.0",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
