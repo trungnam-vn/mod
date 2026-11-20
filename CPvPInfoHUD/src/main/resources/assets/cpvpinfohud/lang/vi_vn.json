@@ -1,0 +1,7 @@
+{
+  "key.cpvpinfohud.toggle_hud": "Bật/tắt CPvP Info HUD",
+  "key.cpvpinfohud.open_settings": "Mở cài đặt CPvP Info HUD",
+  "category.cpvpinfohud": "CPvP Info HUD",
+  "message.cpvpinfohud.enabled": "CPvP Info HUD: ĐÃ BẬT",
+  "message.cpvpinfohud.disabled": "CPvP Info HUD: ĐÃ TẮT"
+}
